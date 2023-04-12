@@ -1,9 +1,7 @@
 <app-header></app-header>
-<div class="photos-wrapper" style="height: 100vh; width: 100vw; overflow-y: scroll;" (scroll)="onScroll($event)" #target>
-    <div class="photos-wrapper__photos">
-    <app-photo-item *ngFor="let item of listItems" [imageUrl]="item.image"></app-photo-item>
-    <div *ngIf="loading" style="margin: auto;">
-        <mat-spinner></mat-spinner>
-    </div>
+<div class="photos-wrapper" style="height: 100vh; width: 100vw; overflow-y: scroll;" (scroll)="onScroll($event)" (click)="OnClick($event)">
+    <app-photo-item *ngFor="let item of listItems" [imageUrl]="item.image" [imageId]="item.id"></app-photo-item>
+    <div *ngIf="loading" class="loader">
+        <mat-spinner color="accent"></mat-spinner>
     </div>
 </div>

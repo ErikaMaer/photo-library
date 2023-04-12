@@ -1,0 +1,11 @@
+<app-header></app-header>
+<div class="single-photo-wrapper">
+    <app-photo-item [imageUrl]="photoUrl" [imageId]="photoId"></app-photo-item>
+    <button 
+        mat-flat-button 
+        aria-label="Remove button"
+        routerLink="/favorites"
+        (click)="OnClick($event)">
+    Remove from favorites
+</button>
+</div>

@@ -8,5 +8,7 @@ import { Component, Input } from '@angular/core';
 export class PhotoItemComponent {
   @Input()
   imageUrl: string = '';
+  @Input()
+  imageId: number = 0;
 
 }

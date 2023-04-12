@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { store } from 'src/app/shared/constants';
-import { Store } from "@ngrx/store";
-import { selectPhotoItems } from "src/app/core/state/menus";
+import { PhotoItem } from 'src/app/interfaces/photoItem';
 
 @Component({
   selector: 'app-favorites',
   templateUrl: './favorites.component.html',
-  styleUrls: ['./favorites.component.scss']
+  styleUrls: ['./favorites.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesComponent implements OnInit {
-  listItems: any[] = [];
-  photoItems$ = this.store.select(selectPhotoItems);
+  photoItems: PhotoItem[] = [];
 
-  constructor(private router: Router, private store: Store) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    console.log(store);
+    const store = JSON.parse(localStorage.getItem("data") || '{}');
+
     for (let i = 0; i < store.length; i++) {
-      this.listItems.push({
+      this.photoItems.push({
         id: store[i],
         image: `https://picsum.photos/id/${store[i]}/200`
       });
@@ -26,11 +25,6 @@ export class FavoritesComponent implements OnInit {
   }
 
   OnClick(event: any) {
-    console.log(event.target.id);
     this.router.navigate(['photos', event.target.id]);
-    //const id = event.target.id;
-    // if (id) {
-    //   store.push(id);
-    // }
   }
 }

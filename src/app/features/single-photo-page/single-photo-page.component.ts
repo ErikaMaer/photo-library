@@ -1,24 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { store } from 'src/app/shared/constants';
-import { deletePhotoItemInitiated } from "src/app/core/state/menus";
-import { Store } from "@ngrx/store";
-import { selectPhotoItem } from "src/app/core/state/menus";
-import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-single-photo-page',
   templateUrl: './single-photo-page.component.html',
-  styleUrls: ['./single-photo-page.component.scss']
+  styleUrls: ['./single-photo-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SinglePhotoPageComponent implements OnInit {
-  photoId:number = 0;
+  photoId: number = 0;
   photoUrl: string = '';
-  photoItemId$ = this.route.params.pipe(map((params) => params['id']));
-  menuItem$ = this.photoItemId$.pipe(
-    switchMap((id) => this.store.select(selectPhotoItem({ id: id })))
-  );
-  constructor(private route: ActivatedRoute, private store: Store) {}
+  
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe((res) => {
@@ -28,8 +22,12 @@ export class SinglePhotoPageComponent implements OnInit {
   }
 
   OnClick(event: Event) {
-    // const index = store.indexOf(this.photoId);
-    // store.splice(index, 1);
-    this.store.dispatch(deletePhotoItemInitiated({ photoId: this.photoId }));
+    if (!store.length) {
+      const values = JSON.parse(localStorage.getItem("data") || '');
+      values.map((el: string) => store.push(el));
+    }
+    const index = store.indexOf(this.photoId.toString());
+    store.splice(index, 1);
+    localStorage.setItem("data", JSON.stringify(store));
   }
 }

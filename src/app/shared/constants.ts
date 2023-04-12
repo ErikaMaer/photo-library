@@ -1,1 +1,1 @@
-export const store:number[] = [];
+export const store: string[] = [];
